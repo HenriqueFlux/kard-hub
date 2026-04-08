@@ -1,7 +1,8 @@
 'use client'
 
-import { useState } from 'react'
-import { X, Loader2 } from 'lucide-react'
+import { useState, useRef } from 'react'
+import { X, Loader2, Upload, ImageIcon } from 'lucide-react'
+import { createClient } from '@/lib/supabase/client'
 import type { ContentItem, ContentSection, ContentType } from '@/lib/types'
 
 interface ContentFormModalProps {
@@ -40,7 +41,35 @@ export default function ContentFormModal({
     active: item?.active ?? true,
   })
   const [loading, setLoading] = useState(false)
+  const [uploading, setUploading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const fileInputRef = useRef<HTMLInputElement>(null)
+
+  async function handleThumbUpload(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0]
+    if (!file) return
+
+    setUploading(true)
+    setError(null)
+
+    const ext = file.name.split('.').pop()
+    const path = `${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`
+
+    const supabase = createClient()
+    const { error: uploadError } = await supabase.storage
+      .from('thumbnails')
+      .upload(path, file, { upsert: false })
+
+    if (uploadError) {
+      setError('Erro ao fazer upload da imagem.')
+      setUploading(false)
+      return
+    }
+
+    const { data } = supabase.storage.from('thumbnails').getPublicUrl(path)
+    set('thumbnail_url', data.publicUrl)
+    setUploading(false)
+  }
 
   function set(key: string, value: unknown) {
     setForm((f) => ({ ...f, [key]: value }))
@@ -114,14 +143,47 @@ export default function ContentFormModal({
               />
             </Field>
 
-            <Field label="URL da thumbnail">
-              <input
-                type="url"
-                value={form.thumbnail_url}
-                onChange={(e) => set('thumbnail_url', e.target.value)}
-                className="input"
-                placeholder="https://..."
-              />
+            <Field label="Thumbnail">
+              <div className="space-y-2">
+                {form.thumbnail_url && (
+                  <img
+                    src={form.thumbnail_url}
+                    alt="Preview"
+                    className="h-24 w-full rounded-lg object-cover border border-[#E2E8F0]"
+                  />
+                )}
+                <button
+                  type="button"
+                  onClick={() => fileInputRef.current?.click()}
+                  disabled={uploading}
+                  className="inline-flex w-full items-center justify-center gap-2 rounded-lg border border-dashed border-[#E2E8F0] bg-gray-50 px-4 py-2.5 text-xs font-semibold text-gray-500 transition hover:bg-gray-100 disabled:opacity-60"
+                >
+                  {uploading ? (
+                    <><Loader2 size={13} className="animate-spin" /> Enviando...</>
+                  ) : (
+                    <><Upload size={13} /> {form.thumbnail_url ? 'Trocar imagem' : 'Upload da máquina'}</>
+                  )}
+                </button>
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept="image/*"
+                  className="hidden"
+                  onChange={handleThumbUpload}
+                />
+                <div className="flex items-center gap-2">
+                  <div className="h-px flex-1 bg-[#E2E8F0]" />
+                  <span className="text-[10px] font-bold uppercase tracking-wide text-gray-400">ou cole uma URL</span>
+                  <div className="h-px flex-1 bg-[#E2E8F0]" />
+                </div>
+                <input
+                  type="url"
+                  value={form.thumbnail_url}
+                  onChange={(e) => set('thumbnail_url', e.target.value)}
+                  className="input"
+                  placeholder="https://..."
+                />
+              </div>
             </Field>
 
             <Field label="Tipo *">
