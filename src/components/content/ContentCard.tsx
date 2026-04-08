@@ -19,7 +19,7 @@ const typeLabels = {
 
 interface ContentCardProps {
   item: ContentItem
-  variant?: 'default' | 'image' | 'video'
+  variant?: 'default' | 'image' | 'video' | 'grid'
   actionLabel?: string
 }
 
@@ -105,6 +105,33 @@ export default function ContentCard({
             )}
           </div>
         </div>
+      </a>
+    )
+  }
+
+  if (variant === 'grid') {
+    return (
+      <a
+        href={item.url}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="group flex items-start gap-4 rounded-xl border border-[#E2E8F0] bg-white p-5 shadow-sm transition hover:border-[#01F767] hover:shadow-md"
+      >
+        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-[#F4F6FA] transition group-hover:bg-[#01F767]/10">
+          <Icon size={18} className="text-[#192547] transition group-hover:text-[#01C954]" />
+        </div>
+        <div className="min-w-0 flex-1">
+          <p className="text-sm font-bold text-[#192547]">{item.title}</p>
+          {item.description && (
+            <p className="mt-0.5 text-xs text-gray-400 line-clamp-2">{item.description}</p>
+          )}
+          {item.convenio && (
+            <p className="mt-0.5 text-xs text-gray-400">
+              {item.convenio}{item.uf && ` · ${item.uf}`}
+            </p>
+          )}
+        </div>
+        <ExternalLink size={14} className="mt-0.5 shrink-0 text-gray-300 transition group-hover:text-[#01F767]" />
       </a>
     )
   }

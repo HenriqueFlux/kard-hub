@@ -59,13 +59,13 @@ export default async function CriativosPage({
           <p className="text-sm font-semibold text-gray-400">Nenhum criativo disponível</p>
         </div>
       ) : (
-        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {filtered.map((item) => (
             <ContentCard
               key={item.id}
               item={item}
-              variant="image"
-              actionLabel="Baixar / Acessar"
+              variant="grid"
+              actionLabel="Acessar"
             />
           ))}
         </div>

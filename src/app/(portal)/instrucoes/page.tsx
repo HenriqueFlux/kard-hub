@@ -29,9 +29,9 @@ export default async function InstrucoesPage() {
       {items.length === 0 ? (
         <EmptyState />
       ) : (
-        <div className="space-y-3">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {items.map((item) => (
-            <ContentCard key={item.id} item={item} variant="default" actionLabel="Acessar" />
+            <ContentCard key={item.id} item={item} variant="grid" actionLabel="Acessar" />
           ))}
         </div>
       )}

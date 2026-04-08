@@ -38,30 +38,26 @@ export default function RoteirosClient({ items }: { items: ContentItem[] }) {
           </p>
         </div>
       ) : (
-        <div className="space-y-2">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {filtered.map((item) => (
-            <div
+            <a
               key={item.id}
-              className="flex items-center gap-4 rounded-xl border border-[#E2E8F0] bg-white px-5 py-4 transition hover:border-[#01F767]"
+              href={item.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group flex items-start gap-4 rounded-xl border border-[#E2E8F0] bg-white p-5 shadow-sm transition hover:border-[#01F767] hover:shadow-md"
             >
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-[#F4F6FA] transition group-hover:bg-[#01F767]/10">
+                <Search size={16} className="text-[#192547] transition group-hover:text-[#01C954]" />
+              </div>
               <div className="min-w-0 flex-1">
-                <p className="text-sm font-bold text-[#192547]">
-                  {item.convenio ?? item.title}
-                </p>
+                <p className="text-sm font-bold text-[#192547]">{item.convenio ?? item.title}</p>
                 {item.uf && (
                   <p className="mt-0.5 text-xs text-gray-400">{item.uf}</p>
                 )}
               </div>
-              <a
-                href={item.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex shrink-0 items-center gap-1.5 rounded-lg bg-[#01F767] px-3.5 py-1.5 text-xs font-bold text-[#192547] transition hover:opacity-90"
-              >
-                Ver Roteiro
-                <ExternalLink size={11} />
-              </a>
-            </div>
+              <ExternalLink size={14} className="mt-0.5 shrink-0 text-gray-300 transition group-hover:text-[#01F767]" />
+            </a>
           ))}
         </div>
       )}
