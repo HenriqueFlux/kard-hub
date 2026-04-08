@@ -26,6 +26,7 @@ const mainNavItems = [
   { href: '/roteiros', label: 'Roteiros Operacionais', icon: ClipboardList },
   { href: '/instrucoes', label: 'Instruções Operacionais', icon: Info },
   { href: '/criativos', label: 'Criativos', icon: Image },
+  { href: '/calculadora', label: 'Calculadora', icon: Calculator },
   { href: '/tutoriais', label: 'Tutoriais', icon: PlayCircle, comingSoon: true },
 ]
 
