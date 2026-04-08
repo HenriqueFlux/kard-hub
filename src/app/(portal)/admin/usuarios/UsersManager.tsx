@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { Plus, UserCheck, UserX, KeyRound, Loader2, X, Pencil } from 'lucide-react'
-import type { Profile } from '@/lib/types'
+import type { Profile, UserRole } from '@/lib/types'
 
 export default function UsersManager({ users }: { users: Profile[] }) {
   const router = useRouter()
@@ -181,7 +181,7 @@ function EditUserModal({ user, onClose, onSaved }: { user: Profile; onClose: () 
             <label className="mb-1.5 block text-[10px] font-bold uppercase tracking-wide text-gray-500">Perfil</label>
             <select
               value={form.role}
-              onChange={(e) => setForm((f) => ({ ...f, role: e.target.value }))}
+              onChange={(e) => setForm((f) => ({ ...f, role: e.target.value as UserRole }))}
               className="w-full rounded-lg border border-[#E2E8F0] px-3 py-2.5 text-sm font-medium outline-none focus:border-[#192547]"
             >
               <option value="user">Parceiro</option>
