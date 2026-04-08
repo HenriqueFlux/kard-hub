@@ -17,6 +17,7 @@ import {
   Settings,
   X,
   Zap,
+  Lock,
 } from 'lucide-react'
 import type { MenuItem, Profile } from '@/lib/types'
 
@@ -24,9 +25,9 @@ const mainNavItems = [
   { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
   { href: '/materiais', label: 'Materiais de Suporte', icon: FileText },
   { href: '/roteiros', label: 'Roteiros Operacionais', icon: ClipboardList },
-  { href: '/instrucoes', label: 'Instruções', icon: Info },
+  { href: '/instrucoes', label: 'Instruções Operacionais', icon: Info },
   { href: '/criativos', label: 'Criativos', icon: Image },
-  { href: '/tutoriais', label: 'Tutoriais', icon: PlayCircle },
+  { href: '/tutoriais', label: 'Tutoriais', icon: PlayCircle, comingSoon: true },
 ]
 
 const defaultMenuIcons: Record<string, React.ElementType> = {
@@ -94,8 +95,20 @@ export default function Sidebar({
           <p className="mb-2 px-2 text-[9px] font-bold uppercase tracking-[2px] text-white/30">
             Menu Principal
           </p>
-          {mainNavItems.map(({ href, label, icon: Icon }) => {
+          {mainNavItems.map(({ href, label, icon: Icon, comingSoon }) => {
             const active = pathname === href || pathname.startsWith(href + '/')
+            if (comingSoon) {
+              return (
+                <span
+                  key={href}
+                  className="mb-0.5 flex items-center gap-2.5 rounded-lg px-3 py-2.5 text-sm font-semibold text-white/30 cursor-not-allowed"
+                >
+                  <Lock size={15} />
+                  {label}
+                  <span className="ml-1 text-[10px] font-medium">(Em breve)</span>
+                </span>
+              )
+            }
             return (
               <Link
                 key={href}
