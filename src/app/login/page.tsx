@@ -1,7 +1,6 @@
 export const runtime = 'edge'
 
 import LoginForm from './LoginForm'
-import { Zap } from 'lucide-react'
 
 export const metadata = { title: 'Login — Kard Hub' }
 
@@ -25,8 +24,8 @@ export default function LoginPage({
       <div className="relative w-full max-w-sm">
         {/* Logo */}
         <div className="mb-8 flex flex-col items-center">
-          <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-[#01F767]">
-            <Zap size={28} className="text-[#192547]" fill="#192547" />
+          <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-2xl overflow-hidden">
+            <img src="https://pub-51d74cef61734d03867257479ddd2aae.r2.dev/KL-logo-fundo-azul-RGB.png" alt="Kard" className="h-full w-full object-contain" />
           </div>
           <h1 className="text-2xl font-black text-white">Kard Hub</h1>
           <p className="mt-1 text-sm font-medium text-white/50">

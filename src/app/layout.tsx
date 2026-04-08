@@ -11,6 +11,10 @@ const montserrat = Montserrat({
 export const metadata: Metadata = {
   title: 'Kard Hub — Portal de Parceiros',
   description: 'Central de operações para parceiros Kard',
+  icons: {
+    icon: 'https://pub-51d74cef61734d03867257479ddd2aae.r2.dev/KL-logo-fundo-azul-RGB.png',
+    apple: 'https://pub-51d74cef61734d03867257479ddd2aae.r2.dev/KL-logo-fundo-azul-RGB.png',
+  },
 }
 
 export default function RootLayout({

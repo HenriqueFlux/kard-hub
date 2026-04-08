@@ -16,7 +16,6 @@ import {
   Megaphone,
   Settings,
   X,
-  Zap,
   Lock,
 } from 'lucide-react'
 import type { MenuItem, Profile } from '@/lib/types'
@@ -73,8 +72,8 @@ export default function Sidebar({
       >
         {/* Brand */}
         <div className="flex items-center gap-3 border-b border-white/10 px-5 py-5">
-          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-[#01F767]">
-            <Zap size={18} className="text-[#192547]" fill="#192547" />
+          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg overflow-hidden">
+            <img src="https://pub-51d74cef61734d03867257479ddd2aae.r2.dev/KL-logo-fundo-azul-RGB.png" alt="Kard" className="h-full w-full object-contain" />
           </div>
           <div>
             <p className="text-sm font-black leading-tight text-white">Kard Hub</p>
