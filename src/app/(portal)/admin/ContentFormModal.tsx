@@ -220,6 +220,22 @@ export default function ContentFormModal({
               </div>
             )}
 
+            {section === 'roteiros' && (
+              <Field label="Categoria">
+                <select
+                  value={form.category}
+                  onChange={(e) => set('category', e.target.value)}
+                  className="input"
+                >
+                  <option value="">Sem categoria</option>
+                  <option value="Governos">Governos</option>
+                  <option value="Prefeituras">Prefeituras</option>
+                  <option value="Tribunais">Tribunais</option>
+                  <option value="Previdências">Previdências</option>
+                </select>
+              </Field>
+            )}
+
             {section === 'tutoriais' && (
               <div className="grid grid-cols-2 gap-3">
                 <Field label="Duração">
