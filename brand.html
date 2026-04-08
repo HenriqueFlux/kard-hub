@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Branding — Portal Kard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: #0D1117;
+      color: #E6EDF3;
+      font-family: 'Montserrat', sans-serif;
+      padding: 56px 24px 80px;
+      min-height: 100vh;
+    }
+
+    /* ── HEADER ── */
+    header {
+      text-align: center;
+      margin-bottom: 60px;
+    }
+    .eyebrow {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: #8B949E;
+      margin-bottom: 14px;
+    }
+    header h1 {
+      font-size: 34px;
+      font-weight: 900;
+      color: #F0F6FF;
+      margin-bottom: 10px;
+      letter-spacing: -0.5px;
+    }
+    header p {
+      font-size: 14px;
+      color: #6E7681;
+      max-width: 500px;
+      margin: 0 auto;
+      line-height: 1.6;
+    }
+
+    /* ── CARDS GRID ── */
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+      gap: 24px;
+      max-width: 1160px;
+      margin: 0 auto 72px;
+    }
+
+    .brand-card {
+      background: #161B22;
+      border: 1.5px solid #21262D;
+      border-radius: 16px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform 0.22s ease, border-color 0.22s ease, box-shadow 0.22s ease;
+    }
+    .brand-card:hover {
+      transform: translateY(-5px);
+      border-color: var(--c);
+      box-shadow: 0 12px 40px var(--cs);
+    }
+
+    .card-topbar { height: 4px; background: var(--c); }
+
+    .card-body { padding: 28px; }
+
+    /* Logo */
+    .logo-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+    .logo-icon {
+      width: 46px;
+      height: 46px;
+      border-radius: 11px;
+      background: var(--icon-bg, var(--c));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .logo-name {
+      font-size: 20px;
+      font-weight: 900;
+      color: #F0F6FF;
+      letter-spacing: -0.3px;
+      line-height: 1.2;
+    }
+    .logo-tagline {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: var(--c);
+      margin-top: 3px;
+    }
+
+    /* Palette */
+    .palette {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 24px;
+    }
+    .swatch { flex: 1; border-radius: 8px; overflow: hidden; }
+    .sw-color { height: 34px; }
+    .sw-label {
+      font-size: 8px;
+      font-weight: 700;
+      text-align: center;
+      padding: 5px 2px;
+      background: #0D1117;
+      color: #6E7681;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+    }
+
+    /* Concept */
+    .concept-label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: var(--c);
+      margin-bottom: 7px;
+    }
+    .concept-text {
+      font-size: 12.5px;
+      color: #8B949E;
+      line-height: 1.65;
+      margin-bottom: 20px;
+    }
+
+    /* Tagline */
+    .tagline {
+      font-size: 15px;
+      font-weight: 700;
+      color: #E6EDF3;
+      line-height: 1.45;
+      margin-bottom: 20px;
+      padding-left: 13px;
+      border-left: 3px solid var(--c);
+    }
+
+    /* Typo preview */
+    .typo-box {
+      background: #0D1117;
+      border-radius: 9px;
+      padding: 16px 18px;
+      margin-bottom: 22px;
+    }
+    .typo-title {
+      font-size: 16px;
+      font-weight: 800;
+      color: #F0F6FF;
+      margin-bottom: 5px;
+    }
+    .typo-sub {
+      font-size: 11px;
+      color: #6E7681;
+      font-weight: 500;
+    }
+
+    /* Button */
+    .btn-choose {
+      width: 100%;
+      padding: 13px;
+      background: var(--c);
+      color: var(--btn-text, #0D1117);
+      font-family: 'Montserrat', sans-serif;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      border: none;
+      border-radius: 9px;
+      cursor: pointer;
+      transition: opacity 0.15s, transform 0.1s;
+    }
+    .btn-choose:hover { opacity: 0.88; transform: scale(0.99); }
+    .btn-choose:active { transform: scale(0.97); }
+
+    /* Selected badge */
+    .sel-badge {
+      display: none;
+      margin-top: 14px;
+      padding: 10px;
+      background: var(--cs);
+      border: 1px solid var(--c);
+      border-radius: 8px;
+      text-align: center;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--c);
+    }
+    .sel-badge.on { display: block; }
+
+    /* ── OPTION VARIABLES ── */
+    .opt-a {
+      --c: #192547;
+      --cs: rgba(25,37,71,.4);
+      --icon-bg: #01F767;
+      --btn-text: #01F767;
+    }
+    .opt-b {
+      --c: #01F767;
+      --cs: rgba(1,247,103,.2);
+      --icon-bg: #192547;
+      --btn-text: #192547;
+    }
+    .opt-c {
+      --c: #3D7EFF;
+      --cs: rgba(61,126,255,.22);
+      --icon-bg: linear-gradient(135deg, #192547 0%, #3D7EFF 100%);
+      --btn-text: white;
+    }
+
+    /* ── PREVIEW SECTION ── */
+    .preview-wrap {
+      max-width: 1160px;
+      margin: 0 auto;
+    }
+    .preview-heading {
+      text-align: center;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: #6E7681;
+      margin-bottom: 28px;
+    }
+
+    .shell {
+      display: flex;
+      height: 540px;
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid #21262D;
+      box-shadow: 0 32px 64px rgba(0,0,0,.5);
+    }
+
+    /* Sidebar */
+    .sidebar {
+      width: 220px;
+      background: #192547;
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+    }
+    .sb-brand {
+      padding: 20px 18px 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      border-bottom: 1px solid rgba(255,255,255,.08);
+    }
+    .sb-brand-icon {
+      width: 34px;
+      height: 34px;
+      border-radius: 9px;
+      background: #01F767;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: background 0.35s;
+    }
+    .sb-brand-name {
+      font-size: 13px;
+      font-weight: 900;
+      color: white;
+      line-height: 1.2;
+    }
+    .sb-brand-sub {
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,.4);
+    }
+    .sb-nav { padding: 14px 10px; flex: 1; }
+    .sb-section {
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,.3);
+      padding: 0 8px;
+      margin: 14px 0 6px;
+    }
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      padding: 9px 10px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 600;
+      color: rgba(255,255,255,.55);
+      margin-bottom: 2px;
+      cursor: pointer;
+      transition: background 0.15s, color 0.15s;
+    }
+    .nav-item:hover { background: rgba(255,255,255,.08); color: white; }
+    .nav-item.active {
+      background: #01F767;
+      color: #192547;
+      font-weight: 700;
+      transition: background 0.35s, color 0.35s;
+    }
+    .nav-item svg { width: 14px; height: 14px; flex-shrink: 0; }
+
+    /* Main */
+    .main { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+
+    .topbar {
+      background: white;
+      border-bottom: 1px solid #E2E8F0;
+      height: 56px;
+      padding: 0 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-shrink: 0;
+    }
+    .topbar-title {
+      font-size: 15px;
+      font-weight: 800;
+      color: #192547;
+    }
+    .topbar-btn {
+      padding: 8px 18px;
+      background: #01F767;
+      color: #192547;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.3px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.35s, color 0.35s;
+    }
+
+    .content {
+      flex: 1;
+      padding: 24px;
+      background: #F4F6FA;
+      overflow-y: auto;
+    }
+
+    .greeting-name { font-size: 18px; font-weight: 900; color: #192547; margin-bottom: 3px; }
+    .greeting-sub { font-size: 12px; color: #64748B; font-weight: 500; margin-bottom: 22px; }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4,1fr);
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+    .stat-card {
+      background: white;
+      border: 1px solid #E2E8F0;
+      border-radius: 10px;
+      padding: 14px;
+    }
+    .stat-label {
+      font-size: 9px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #94A3B8;
+      margin-bottom: 7px;
+    }
+    .stat-val {
+      font-size: 22px;
+      font-weight: 900;
+      color: #192547;
+    }
+    .stat-val.hl { color: #01F767; transition: color 0.35s; }
+
+    .section-label {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      color: #94A3B8;
+      margin-bottom: 14px;
+    }
+
+    .content-grid {
+      display: grid;
+      grid-template-columns: repeat(3,1fr);
+      gap: 12px;
+    }
+    .c-card {
+      background: white;
+      border: 1px solid #E2E8F0;
+      border-radius: 10px;
+      padding: 14px;
+    }
+    .c-thumb {
+      height: 58px;
+      background: #F1F5F9;
+      border-radius: 7px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 10px;
+    }
+    .c-thumb svg { width: 22px; height: 22px; color: #CBD5E1; }
+    .c-title { font-size: 11px; font-weight: 700; color: #192547; margin-bottom: 3px; }
+    .c-sub { font-size: 10px; color: #94A3B8; margin-bottom: 9px; }
+    .c-btn {
+      padding: 5px 11px;
+      background: #01F767;
+      color: #192547;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 10px;
+      font-weight: 700;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background 0.35s, color 0.35s;
+      letter-spacing: 0.2px;
+    }
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="eyebrow">Kard · Identidade Visual · 2026</div>
+  <h1>Escolha o Branding do Portal</h1>
+  <p>Três propostas para o Agente Digital. Clique em "Escolher" para ver o preview ao vivo do produto real.</p>
+</header>
+
+<!-- ═══════════════════════════════════════════ CARDS ══════════════════════════════════════════ -->
+<div class="cards-grid">
+
+  <!-- ──── OPÇÃO A: KARD PORTAL (Institutional / Azul) ──── -->
+  <div class="brand-card opt-a">
+    <div class="card-topbar"></div>
+    <div class="card-body">
+
+      <div class="logo-row">
+        <div class="logo-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+            <path d="M3 9L12 3L21 9V20C21 20.55 20.55 21 20 21H15V15H9V21H4C3.45 21 3 20.55 3 20V9Z" fill="#192547"/>
+          </svg>
+        </div>
+        <div>
+          <div class="logo-name">Kard Portal</div>
+          <div class="logo-tagline">Para Parceiros</div>
+        </div>
+      </div>
+
+      <div class="palette">
+        <div class="swatch">
+          <div class="sw-color" style="background:#0D1528"></div>
+          <div class="sw-label">Dark</div>
+        </div>
+        <div class="swatch">
+          <div class="sw-color" style="background:#192547"></div>
+          <div class="sw-label">Primary</div>
+        </div>
+        <div class="swatch">
+          <div class="sw-color" style="background:#2A3D70"></div>
+          <div class="sw-label">Mid</div>
+        </div>
+        <div class="swatch">
+          <div class="sw-color" style="background:#01F767"></div>
+          <div class="sw-label">Accent</div>
+        </div>
+        <div class="swatch">
+          <div class="sw-color" style="background:#EFF2F9"></div>
+          <div class="sw-label">Bg</div>
+        </div>
+      </div>
+
+      <div class="concept-label">Conceito</div>
+      <div class="concept-text">Institucional e sólido. O azul Kard como protagonista comunica confiança e seriedade — ideal para correspondentes bancários que precisam transmitir credibilidade ao apresentar o sistema.</div>
+
+      <div class="tagline">"O hub operacional do seu negócio consignado"</div>
+
+      <div class="typo-box">
+        <div class="typo-title">Materiais de Suporte</div>
+        <div class="typo-sub">Acesse PDFs, planilhas e documentos operacionais</div>
+      </div>
+
+      <button class="btn-choose" onclick="applyBrand('a')">Escolher Kard Portal</button>
+      <div class="sel-badge" id="sel-a">✓ Kard Portal selecionado</div>
+    </div>
+  </div>
+
+  <!-- ──── OPÇÃO B: AGENTE DIGITAL (Dynamic / Verde) ──── -->
+  <div class="brand-card opt-b">
+    <div class="card-topbar"></div>
+    <div class="card-body">
+
+      <div class="logo-row">
+        <div class="logo-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+            <path d="M13 2L4.09 12.11C3.69 12.59 4.02 13.32 4.65 13.32H11V22L19.91 11.89C20.31 11.41 19.98 10.68 19.35 10.68H13V2Z" fill="#01F767"/>
+          </svg>
+        </div>
+        <div>
+          <div class="logo-name">Agente Digital</div>
+          <div class="logo-tagline">by Kard</div>
+        </div>
+      </div>
+
+      <div class="palette">
+        <div class="swatch">
+          <div class="sw-color" style="background:#00963F"></div>
+          <div class="sw-label">Dark</div>
+        </div>
+        <div class="swatch">
+          <div class="sw-color" style="background:#01F767"></div>
+          <div class="sw-label">Primary</div>
+        </div>
+        <div class="swatch">
+          <div class="sw-color" style="background:#52FFA0"></div>
+          <div class="sw-label">Mid</div>
+        </div>
+        <div class="swatch">
+          <div class="sw-color" style="background:#192547"></div>
+          <div class="sw-label">Accent</div>
+        </div>
+        <div class="swatch">
+          <div class="sw-color" style="background:#F0FFF8"></div>
+          <div class="sw-label">Bg</div>
+        </div>
+      </div>
+
+      <div class="concept-label">Conceito</div>
+      <div class="concept-text">Dinâmico e tech. O verde como protagonista evoca crescimento e tecnologia financeira moderna. O nome "Agente Digital" posiciona o parceiro como protagonista ativo — ele é o agente, o portal é a sua ferramenta.</div>
+
+      <div class="tagline">"Tecnologia a serviço do correspondente moderno"</div>
+
+      <div class="typo-box">
+        <div class="typo-title">Roteiros Operacionais</div>
+        <div class="typo-sub">Encontre o roteiro do seu convênio em segundos</div>
+      </div>
+
+      <button class="btn-choose" onclick="applyBrand('b')">Escolher Agente Digital</button>
+      <div class="sel-badge" id="sel-b">✓ Agente Digital selecionado</div>
+    </div>
+  </div>
+
+  <!-- ──── OPÇÃO C: KARD HUB (Premium / Azul Elétrico) ──── -->
+  <div class="brand-card opt-c">
+    <div class="card-topbar"></div>
+    <div class="card-body">
+
+      <div class="logo-row">
+        <div class="logo-icon" style="background: linear-gradient(135deg, #192547 0%, #3D7EFF 100%);">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+            <circle cx="12" cy="12" r="2.5" fill="#01F767"/>
+            <path d="M12 3C7.03 3 3 7.03 3 12C3 14.76 4.15 17.25 6.04 19L7.46 17.58C5.94 16.19 5 14.2 5 12C5 8.13 8.13 5 12 5C15.87 5 19 8.13 19 12C19 14.2 18.06 16.19 16.54 17.58L17.96 19C19.85 17.25 21 14.76 21 12C21 7.03 16.97 3 12 3Z" fill="white" fill-opacity="0.9"/>
+            <path d="M12 7.5C9.52 7.5 7.5 9.52 7.5 12C7.5 13.35 8.07 14.56 9 15.41L10.42 14C9.84 13.44 9.5 12.76 9.5 12C9.5 10.62 10.62 9.5 12 9.5C13.38 9.5 14.5 10.62 14.5 12C14.5 12.76 14.16 13.44 13.58 14L15 15.41C15.93 14.56 16.5 13.35 16.5 12C16.5 9.52 14.48 7.5 12 7.5Z" fill="white" fill-opacity="0.65"/>
+          </svg>
+        </div>
+        <div>
+          <div class="logo-name">Kard Hub</div>
+          <div class="logo-tagline">Central de Parceiros</div>
+        </div>
+      </div>
+
+      <div class="palette">
+        <div class="swatch">
+          <div class="sw-color" style="background:#192547"></div>
+          <div class="sw-label">Brand</div>
+        </div>
+        <div class="swatch">
+          <div class="sw-color" style="background:#3D7EFF"></div>
+          <div class="sw-label">Primary</div>
+        </div>
+        <div class="swatch">
+          <div class="sw-color" style="background:#7AABFF"></div>
+          <div class="sw-label">Mid</div>
+        </div>
+        <div class="swatch">
+          <div class="sw-color" style="background:#01F767"></div>
+          <div class="sw-label">Accent</div>
+        </div>
+        <div class="swatch">
+          <div class="sw-color" style="background:#F0F4FF"></div>
+          <div class="sw-label">Bg</div>
+        </div>
+      </div>
+
+      <div class="concept-label">Conceito</div>
+      <div class="concept-text">Premium e escalável. Um azul elétrico moderno conecta a solidez da marca Kard com a leveza de um produto SaaS B2B. Posicionamento de fintech de alta confiança sem parecer banco tradicional.</div>
+
+      <div class="tagline">"Sua central de operações consignadas"</div>
+
+      <div class="typo-box">
+        <div class="typo-title">Criativos para Convênios</div>
+        <div class="typo-sub">Banco de artes prontas para suas campanhas</div>
+      </div>
+
+      <button class="btn-choose" onclick="applyBrand('c')">Escolher Kard Hub</button>
+      <div class="sel-badge" id="sel-c">✓ Kard Hub selecionado</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ═══════════════════════════════════════ PREVIEW SHELL ══════════════════════════════════════ -->
+<div class="preview-wrap">
+  <div class="preview-heading">Preview Interativo — Clique em "Escolher" acima para trocar o tema ao vivo</div>
+
+  <div class="shell">
+
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+      <div class="sb-brand">
+        <div class="sb-brand-icon" id="p-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+            <path d="M13 2L4.09 12.11C3.69 12.59 4.02 13.32 4.65 13.32H11V22L19.91 11.89C20.31 11.41 19.98 10.68 19.35 10.68H13V2Z" fill="#192547" id="p-icon-path"/>
+          </svg>
+        </div>
+        <div>
+          <div class="sb-brand-name" id="p-name">Agente Digital</div>
+          <div class="sb-brand-sub" id="p-sub">by Kard</div>
+        </div>
+      </div>
+
+      <div class="sb-nav">
+        <div class="sb-section">Menu Principal</div>
+
+        <div class="nav-item active" id="nav-dash">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          Dashboard
+        </div>
+        <div class="nav-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          Materiais
+        </div>
+        <div class="nav-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+          Roteiros
+        </div>
+        <div class="nav-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          Instruções
+        </div>
+        <div class="nav-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+          Criativos
+        </div>
+        <div class="nav-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
+          Tutoriais
+        </div>
+
+        <div class="sb-section">Links Rápidos</div>
+
+        <div class="nav-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+          Sistema
+        </div>
+        <div class="nav-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+          WhatsApp
+        </div>
+      </div>
+    </div>
+
+    <!-- MAIN -->
+    <div class="main">
+
+      <div class="topbar">
+        <div class="topbar-title">Dashboard</div>
+        <button class="topbar-btn" id="p-topbtn">+ Novo Material</button>
+      </div>
+
+      <div class="content">
+        <div class="greeting-name">Olá, João Silva 👋</div>
+        <div class="greeting-sub">Bem-vindo ao seu portal de parceiro Kard</div>
+
+        <div class="stats">
+          <div class="stat-card">
+            <div class="stat-label">Materiais</div>
+            <div class="stat-val">24</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Roteiros</div>
+            <div class="stat-val hl" id="p-stat">38</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Tutoriais</div>
+            <div class="stat-val">12</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Criativos</div>
+            <div class="stat-val">56</div>
+          </div>
+        </div>
+
+        <div class="section-label">Conteúdos Recentes</div>
+
+        <div class="content-grid">
+          <div class="c-card">
+            <div class="c-thumb">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            </div>
+            <div class="c-title">Manual Operacional 2026</div>
+            <div class="c-sub">PDF · Atualizado hoje</div>
+            <button class="c-btn" id="p-cb1">Acessar →</button>
+          </div>
+          <div class="c-card">
+            <div class="c-thumb">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
+            </div>
+            <div class="c-title">Treinamento Consignado</div>
+            <div class="c-sub">Vídeo · 18 min</div>
+            <button class="c-btn" id="p-cb2">Assistir →</button>
+          </div>
+          <div class="c-card">
+            <div class="c-thumb">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+            </div>
+            <div class="c-title">Arte — Pref. Luziânia</div>
+            <div class="c-sub">Imagem · Marketing</div>
+            <button class="c-btn" id="p-cb3">Baixar →</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const themes = {
+    a: {
+      name: 'Kard Portal',
+      sub: 'Para Parceiros',
+      iconBg: '#01F767',
+      iconPathFill: '#192547',
+      navActiveBg: '#01F767',
+      navActiveColor: '#192547',
+      topBtnBg: '#01F767',
+      topBtnColor: '#192547',
+      statColor: '#01F767',
+      cardBtnBg: '#01F767',
+      cardBtnColor: '#192547',
+    },
+    b: {
+      name: 'Agente Digital',
+      sub: 'by Kard',
+      iconBg: '#192547',
+      iconPathFill: '#01F767',
+      navActiveBg: '#01F767',
+      navActiveColor: '#192547',
+      topBtnBg: '#01F767',
+      topBtnColor: '#192547',
+      statColor: '#01C954',
+      cardBtnBg: '#01F767',
+      cardBtnColor: '#192547',
+    },
+    c: {
+      name: 'Kard Hub',
+      sub: 'Central de Parceiros',
+      iconBg: 'linear-gradient(135deg, #192547 0%, #3D7EFF 100%)',
+      iconPathFill: '#01F767',
+      navActiveBg: '#3D7EFF',
+      navActiveColor: '#ffffff',
+      topBtnBg: '#3D7EFF',
+      topBtnColor: '#ffffff',
+      statColor: '#3D7EFF',
+      cardBtnBg: '#3D7EFF',
+      cardBtnColor: '#ffffff',
+    }
+  };
+
+  function applyBrand(key) {
+    const t = themes[key];
+
+    // Brand name
+    document.getElementById('p-name').textContent = t.name;
+    document.getElementById('p-sub').textContent = t.sub;
+
+    // Icon
+    const icon = document.getElementById('p-icon');
+    icon.style.background = t.iconBg;
+    document.getElementById('p-icon-path').setAttribute('fill', t.iconPathFill);
+
+    // Nav active
+    const nav = document.getElementById('nav-dash');
+    nav.style.background = t.navActiveBg;
+    nav.style.color = t.navActiveColor;
+
+    // Topbar button
+    const btn = document.getElementById('p-topbtn');
+    btn.style.background = t.topBtnBg;
+    btn.style.color = t.topBtnColor;
+
+    // Stat highlight
+    document.getElementById('p-stat').style.color = t.statColor;
+
+    // Card buttons
+    ['p-cb1', 'p-cb2', 'p-cb3'].forEach(id => {
+      const el = document.getElementById(id);
+      el.style.background = t.cardBtnBg;
+      el.style.color = t.cardBtnColor;
+    });
+
+    // Badges
+    document.querySelectorAll('.sel-badge').forEach(el => el.classList.remove('on'));
+    document.getElementById('sel-' + key).classList.add('on');
+  }
+
+  // ✅ ESCOLHA FINAL: Kard Hub com cores do Agente Digital
+  themes.b.name = 'Kard Hub';
+  themes.b.sub = 'Central de Parceiros';
+  document.querySelectorAll('.logo-name')[1].textContent = 'Kard Hub';
+  document.querySelectorAll('.logo-tagline')[1].textContent = 'Central de Parceiros';
+  applyBrand('b');
+</script>
+</body>
+</html>
