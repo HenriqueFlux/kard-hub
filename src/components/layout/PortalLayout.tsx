@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { Menu } from 'lucide-react'
+import { Menu, LogOut } from 'lucide-react'
 import Sidebar from '@/components/sidebar/Sidebar'
 import type { MenuItem, Profile } from '@/lib/types'
 
@@ -47,7 +47,19 @@ export default function PortalLayout({
               </h1>
             )}
           </div>
-          {pageAction && <div>{pageAction}</div>}
+          <div className="flex items-center gap-2">
+            {pageAction && <div>{pageAction}</div>}
+            <form action="/api/auth/logout" method="POST">
+              <button
+                type="submit"
+                title="Sair"
+                className="flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-semibold text-gray-400 transition hover:bg-gray-100 hover:text-[#192547]"
+              >
+                <LogOut size={14} />
+                <span className="hidden sm:inline">Sair</span>
+              </button>
+            </form>
+          </div>
         </header>
 
         {/* Content */}

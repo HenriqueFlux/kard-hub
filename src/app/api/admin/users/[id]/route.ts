@@ -1,6 +1,6 @@
 export const runtime = 'edge'
 
-import { createClient } from '@/lib/supabase/server'
+import { createClient, createAdminClient } from '@/lib/supabase/server'
 import { NextRequest, NextResponse } from 'next/server'
 
 export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
@@ -12,10 +12,26 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
   if (profile?.role !== 'admin') return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
 
   const { id } = await params
-  const body = await req.json()
+  const { name, role, active, password } = await req.json()
 
-  const { error } = await supabase.from('profiles').update(body).eq('id', id)
-  if (error) return NextResponse.json({ error: error.message }, { status: 400 })
+  const adminClient = createAdminClient()
+
+  // Atualiza senha se fornecida
+  if (password) {
+    const { error } = await adminClient.auth.admin.updateUserById(id, { password })
+    if (error) return NextResponse.json({ error: error.message }, { status: 400 })
+  }
+
+  // Atualiza perfil
+  const profileUpdate: Record<string, unknown> = {}
+  if (name !== undefined) profileUpdate.name = name
+  if (role !== undefined) profileUpdate.role = role
+  if (active !== undefined) profileUpdate.active = active
+
+  if (Object.keys(profileUpdate).length > 0) {
+    const { error } = await adminClient.from('profiles').update(profileUpdate).eq('id', id)
+    if (error) return NextResponse.json({ error: error.message }, { status: 400 })
+  }
 
   return new NextResponse(null, { status: 204 })
 }
