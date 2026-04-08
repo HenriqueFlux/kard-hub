@@ -14,26 +14,19 @@ const SECTIONS: { value: ContentSection; label: string }[] = [
   { value: 'tutoriais', label: 'Tutoriais e Conteúdos' },
 ]
 
-export default async function AdminContentPage({
-  searchParams,
-}: {
-  searchParams: Promise<{ secao?: string }>
-}) {
-  const { secao } = await searchParams
-  const currentSection = (secao as ContentSection) ?? 'materiais'
-
+export default async function AdminContentPage() {
   const supabase = await createClient()
   const { data } = await supabase
     .from('content_items')
     .select('*')
-    .eq('section', currentSection)
+    .eq('section', 'materiais')
     .order('order')
 
   return (
     <ContentManager
       sections={SECTIONS}
-      currentSection={currentSection}
-      items={(data ?? []) as ContentItem[]}
+      initialSection="materiais"
+      initialItems={(data ?? []) as ContentItem[]}
     />
   )
 }

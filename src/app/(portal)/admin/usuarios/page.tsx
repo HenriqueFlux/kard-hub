@@ -7,7 +7,7 @@ import type { Profile } from '@/lib/types'
 export const metadata = { title: 'Admin — Usuários — Kard Hub' }
 
 export default async function AdminUsersPage() {
-  const supabase = await createAdminClient()
+  const supabase = createAdminClient()
   const { data } = await supabase
     .from('profiles')
     .select('*')

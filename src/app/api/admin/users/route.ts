@@ -14,7 +14,7 @@ export async function POST(req: NextRequest) {
 
   const { name, email, password, role } = await req.json()
 
-  const adminClient = await createAdminClient()
+  const adminClient = createAdminClient()
   const { data: created, error } = await adminClient.auth.admin.createUser({
     email,
     password,
