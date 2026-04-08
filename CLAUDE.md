@@ -46,6 +46,7 @@ Funciona como **front-end de navegação** — todo conteúdo aponta para links 
 - Botão primário: `bg-[#01F767] text-[#192547]`
 - Sidebar: `bg-[#192547]`, item ativo `bg-[#01F767] text-[#192547]`
 - Ícones: Lucide React
+- Logo: `https://pub-51d74cef61734d03867257479ddd2aae.r2.dev/KL-logo-fundo-azul-RGB.png` (usado na sidebar, login e favicon — substitui o ícone Zap)
 
 ---
 
@@ -152,6 +153,7 @@ Links de conteúdo por seção (SharePoint):
 - **Build local Windows**: `vercel build` falha por symlinks. Usar deploy via Git no Cloudflare Pages.
 - **Admin não vê todos os usuários**: `createAdminClient()` deve usar `createClient` do `@supabase/supabase-js` com `SUPABASE_SERVICE_ROLE_KEY` diretamente (não `createServerClient` do SSR). É síncrono — não usar `await`.
 - **Usuário criado não aparece na lista**: perfil pode ter sido criado no `auth.users` mas não na tabela `profiles`. Inserir manualmente via SQL: `INSERT INTO profiles (id, name, email, role, active) SELECT id, '...', '...', 'user', true FROM auth.users WHERE email = '...'`
+- **Type error em select de role**: cast necessário `e.target.value as UserRole` ao setar role via select.
 
 ---
 
