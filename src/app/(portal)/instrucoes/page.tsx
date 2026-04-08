@@ -31,7 +31,7 @@ export default async function InstrucoesPage() {
       ) : (
         <div className="space-y-3">
           {items.map((item) => (
-            <ContentCard key={item.id} item={item} actionLabel="Acessar" />
+            <ContentCard key={item.id} item={item} variant="default" actionLabel="Acessar" />
           ))}
         </div>
       )}

@@ -1,13 +1,13 @@
 export const runtime = 'edge'
 
-import { createClient } from '@/lib/supabase/server'
+import { createAdminClient } from '@/lib/supabase/server'
 import UsersManager from './UsersManager'
 import type { Profile } from '@/lib/types'
 
 export const metadata = { title: 'Admin — Usuários — Kard Hub' }
 
 export default async function AdminUsersPage() {
-  const supabase = await createClient()
+  const supabase = await createAdminClient()
   const { data } = await supabase
     .from('profiles')
     .select('*')

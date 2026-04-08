@@ -52,9 +52,14 @@ export default async function MateriaisPage({
       {items.length === 0 ? (
         <EmptyState />
       ) : (
-        <div className="space-y-3">
+        <div className={items.some((i) => i.thumbnail_url) ? 'grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3' : 'space-y-3'}>
           {items.map((item) => (
-            <ContentCard key={item.id} item={item} actionLabel="Acessar" />
+            <ContentCard
+              key={item.id}
+              item={item}
+              variant={item.thumbnail_url ? 'image' : 'default'}
+              actionLabel="Acessar"
+            />
           ))}
         </div>
       )}
