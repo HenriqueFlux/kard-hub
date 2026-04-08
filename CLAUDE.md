@@ -17,12 +17,13 @@ Funciona como **front-end de navegação** — todo conteúdo aponta para links 
 | Camada | Tecnologia |
 |--------|-----------|
 | Frontend | React 19 + Tailwind CSS v4 |
-| Framework/Deploy | Next.js 16 (App Router) → Cloudflare Pages |
-| Backend/API | Next.js Route Handlers → Cloudflare Workers |
-| Banco de dados | Supabase (PostgreSQL) |
-| Auth | Supabase Auth (SSR) |
-| Storage | Sem upload — arquivos no Google Drive |
-| E-mail (reset senha) | Resend |
+| Framework/Deploy | Next.js 15 (App Router) → Cloudflare Pages |
+| Build adapter | @cloudflare/next-on-pages@1 (via `npx @cloudflare/next-on-pages@1`) |
+| Backend/API | Next.js Route Handlers (Edge Runtime) |
+| Banco de dados | Supabase (PostgreSQL) — projeto `fkinybthrvkijwwtaqxm` |
+| Auth | Supabase Auth (SSR via @supabase/ssr) |
+| Storage | Sem upload — arquivos no SharePoint/Google Drive |
+| E-mail (reset senha) | Resend (não implementado ainda) |
 | Ícones | Lucide React |
 
 ---
@@ -87,7 +88,9 @@ Funciona como **front-end de navegação** — todo conteúdo aponta para links 
 - `id`, `section` enum(materiais|roteiros|instrucoes|criativos|tutoriais)
 - `title`, `description`, `url`, `thumbnail_url`, `type`, `tags`
 - `order` int, `active` boolean, `created_at`
-- Campos extras: `convenio` (roteiros), `uf` (roteiros), `duration` (tutoriais), `category` (tutoriais)
+- Campos extras: `convenio` (roteiros/criativos), `uf` (roteiros/criativos), `duration` (tutoriais), `category` (roteiros + tutoriais)
+- Categorias de roteiros: Governos, Prefeituras, Tribunais, Previdências
+- Categorias de tutoriais: Onboarding, Operacional, Produtos, Marketing
 
 ### `menu_items`
 - `id`, `label`, `icon`, `url`, `order`, `active`
@@ -97,28 +100,84 @@ Funciona como **front-end de navegação** — todo conteúdo aponta para links 
 
 ---
 
+## Links Rápidos (menu_items no Supabase)
+
+| Label | URL |
+|-------|-----|
+| Sistema de Digitação | https://portal.konectpay.com.br/WebFIMenuMVC/Login/AC.UI.LOGIN.aspx?FISession=dd8165897407 |
+| Grupo do WhatsApp | https://chat.whatsapp.com/F8ytHKyB0huGMwZJWTnkeD |
+| Marketing | https://kardbank-my.sharepoint.com/personal/paulo_silva_kardbank_com_br/_layouts/15/onedrive.aspx?id=... |
+| Calculadora | https://kard.com.br/calculadora-de-comprometimento/ |
+| Drive Corban Kard | https://kardbank-my.sharepoint.com/:f:/g/personal/paulo_silva_kardbank_com_br/IgBBsHaDAAGGRbS0bLg91Zj-AYLHymnrxK2W-LQ3QzBdSuQ?e=v84s0d |
+| Indique um Convênio | https://kardbankers.com.br/abertura-de-convenios/ |
+
+**Nota:** "Roteiros" foi removido dos links rápidos (active=false).
+
+---
+
+## Seções de Conteúdo (content_items)
+
+| Seção | Label na UI | Status |
+|-------|-------------|--------|
+| materiais | Materiais de Suporte | Ativo — grid 3 cols com thumb quando disponível |
+| roteiros | Roteiros Operacionais | Ativo — grid 3 cols, card com badge categoria + estado, filtro por categoria, busca |
+| instrucoes | Instruções Operacionais | Ativo — grid 3 cols sem thumb |
+| criativos | Criativos para Convênios | Ativo — grid 3 cols sem thumb |
+| tutoriais | Tutoriais (Em breve) | Bloqueado — ícone cadeado na sidebar |
+
+Links de conteúdo por seção (SharePoint):
+- Criativos: https://kardbank-my.sharepoint.com/:f:/g/personal/paulo_silva_kardbank_com_br/IgBhJLHnj8FkRp02nD-0nYQPATAjZkteEdD7mRddk4eOJqM?e=nv0mgO
+- Materiais de Suporte: https://kardbank-my.sharepoint.com/:f:/g/personal/paulo_silva_kardbank_com_br/IgC8uzhWXw6ERqmg-SfFts47AZ3VyumE8q1pjJ-HqPrOGyg?e=mklRbN
+- Instruções Operacionais: https://kardbank-my.sharepoint.com/:f:/g/personal/paulo_silva_kardbank_com_br/IgCIpuN-1rk2T60USBZqtY0eAXmjYaWBKdB1d8G6JhlGowU?e=yadEUL
+
+---
+
+## Deploy (Cloudflare Pages)
+
+- Projeto: `kard-hub` em `Henrique.oliveira@kard.com.br's Account`
+- Repositório: `HenriqueFlux/kard-hub` (branch `master`)
+- Build command: `npx @cloudflare/next-on-pages@1`
+- Build output directory: `.vercel/output/static`
+- URL: `https://kard-hub.pages.dev`
+- Env vars necessárias: `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`, `NEXT_PUBLIC_APP_URL`, `NPM_FLAGS=--legacy-peer-deps`
+
+**IMPORTANTE:** `export const runtime = 'edge'` é obrigatório em TODOS os arquivos server-side (pages, layouts, route handlers). Sem isso o build falha no Cloudflare.
+
+---
+
+## Problemas Conhecidos e Soluções
+
+- **Login loop (`/login?error=conta_inativa`)**: Usar `window.location.href = '/dashboard'` no LoginForm, não `router.push()`. RLS do Supabase deve ser simples e não-recursivo.
+- **Peer deps conflict**: `npm install --legacy-peer-deps` ou `NPM_FLAGS=--legacy-peer-deps` no Cloudflare.
+- **Build local Windows**: `vercel build` falha por symlinks. Usar deploy via Git no Cloudflare Pages.
+- **Admin não vê todos os usuários**: `createAdminClient()` deve usar `createClient` do `@supabase/supabase-js` com `SUPABASE_SERVICE_ROLE_KEY` diretamente (não `createServerClient` do SSR). É síncrono — não usar `await`.
+- **Usuário criado não aparece na lista**: perfil pode ter sido criado no `auth.users` mas não na tabela `profiles`. Inserir manualmente via SQL: `INSERT INTO profiles (id, name, email, role, active) SELECT id, '...', '...', 'user', true FROM auth.users WHERE email = '...'`
+
+---
+
 ## Regras de Desenvolvimento
 
-- Sem upload de arquivos — admin cola URL do Google Drive
+- Sem upload de arquivos — admin cola URL do SharePoint/Google Drive
 - Links externos: sempre `target="_blank" rel="noopener noreferrer"`
 - Thumbnails: URL informada pelo admin no cadastro
 - Desktop-first; responsivo tablet; mobile com menu hambúrguer
 - Supabase RLS ativo em todas as tabelas
-- Edge runtime para middleware de auth (compatível com Cloudflare)
+- Edge runtime obrigatório em todos os arquivos server-side (Cloudflare)
 
 ---
 
 ## Critérios de Aceite (MVP)
 
-- [ ] Login funcional (user + admin)
-- [ ] 5 seções com cards e links externos
-- [ ] Menu lateral com 7 links configuráveis
-- [ ] Admin: CRUD completo de conteúdo
-- [ ] Admin: criar/editar/desativar usuários
-- [ ] Admin: gerenciar comunicados do dashboard
-- [ ] Identidade visual Kard Hub aplicada
-- [ ] Responsivo desktop e tablet
-- [ ] Logout funcional
+- [x] Login funcional (user + admin)
+- [x] 5 seções com cards e links externos
+- [x] Menu lateral com links configuráveis
+- [x] Admin: CRUD completo de conteúdo
+- [x] Admin: criar/editar/desativar usuários
+- [x] Admin: gerenciar comunicados do dashboard
+- [x] Identidade visual Kard Hub aplicada
+- [x] Responsivo desktop e tablet
+- [x] Logout funcional
+- [x] Deploy na Cloudflare Pages
 
 ---
 

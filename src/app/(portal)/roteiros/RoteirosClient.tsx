@@ -86,7 +86,7 @@ export default function RoteirosClient({ items }: { items: ContentItem[] }) {
                 <p className="text-sm font-bold text-[#192547]">{item.convenio ?? item.title}</p>
                 {item.uf && (
                   <span className="mt-1 inline-flex items-center rounded-full bg-[#F4F6FA] px-2.5 py-0.5 text-[10px] font-semibold text-gray-500">
-                    Local: {item.uf}
+                    Estado: {item.uf}
                   </span>
                 )}
                 {item.description && (
