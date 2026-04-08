@@ -1,3 +1,5 @@
+export const runtime = 'edge'
+
 import LoginForm from './LoginForm'
 import { Zap } from 'lucide-react'
 

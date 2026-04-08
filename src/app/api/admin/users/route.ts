@@ -1,3 +1,5 @@
+export const runtime = 'edge'
+
 import { createAdminClient } from '@/lib/supabase/server'
 import { createClient } from '@/lib/supabase/server'
 import { NextRequest, NextResponse } from 'next/server'

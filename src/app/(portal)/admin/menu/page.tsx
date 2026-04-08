@@ -1,3 +1,5 @@
+export const runtime = 'edge'
+
 import { createClient } from '@/lib/supabase/server'
 import MenuManager from './MenuManager'
 import type { MenuItem } from '@/lib/types'
